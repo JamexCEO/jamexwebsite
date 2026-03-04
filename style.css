@@ -1,0 +1,306 @@
+/* Use border-box to make sizing and padding predictable */
+*, *::before, *::after {
+	box-sizing: border-box;
+}
+
+/* colour variables allow us to switch theme easily */
+:root {
+    --bg-color: #ebfff4;
+    --text-color: black;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 20px; /* keep content away from the left edge */
+    font-family: Arial, sans-serif;
+}
+
+/* dark theme — apply by adding .dark on the <body> */
+body.dark {
+    --bg-color: #363636;
+    --text-color: white;
+}
+
+/* theme toggle button */
+#theme-toggle {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 24px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+h1 {
+	color: #ff0000;
+	text-align: center;
+	font-family: Verdana, sans-serif;
+}
+
+header {
+	position: sticky;
+	top: 0;
+	background-color: var(--bg-color);
+	z-index: 100;
+}
+
+h2 {
+	color: #ff6701;
+	text-align: center;
+	font-family: Verdana, sans-serif;
+}
+
+h2 a {
+	color: inherit;
+	text-decoration: none;
+}
+
+h3 {
+	color: #ffc000;
+	text-align: left;
+	font-family: Verdana, sans-serif;
+}
+
+p {
+	font-size: 20px;
+}
+
+ol, ul {
+	font-size: 18px;
+}
+
+.button {
+	display: inline-flex;
+ 	align-items: center;
+ 	gap: 8px;
+ 	margin: 5px;
+ 	padding: 6px 10px;
+ 	background-color: #e53935;
+ 	border: 2px solid #ffffff;
+ 	border-radius: 8px;
+	transform: scale(1);
+	transition: transform 0.15s ease, background-color 0.15s ease;
+	box-shadow: 0 2px 0 rgba(0,0,0,0.12);
+
+}
+/* Ensure images inside the button sit nicely */
+.button img {
+ 	height: 20px;
+ 	width: auto;
+ 	display: block;
+}
+.button a {
+ 	color: white;
+ 	font-size: 16pt;
+ 	font-family: Verdana, sans-serif;
+ 	text-decoration: none;
+}
+/* Preferred: change parent background based on whether the button contains an external link */
+.button:has(a[href^="http"]):hover {
+	background-color: #ffc000; /* green for external */
+	transform: scale(1.05);
+}
+.button:has(a:not([href^="http"])):hover {
+	background-color: orange; /* internal/subpage */
+	transform: scale(1.05);
+}
+/* JS-driven fallback classes for older browsers to avoid text-only highlighting */
+.button.hover-external {
+	background-color: #ffc000;
+	transform: scale(1.05);
+}
+.button.hover-internal {
+	background-color: orange;
+	transform: scale(1.05);
+}
+
+/* dark mode button styling */
+body.dark .button {
+	border-color: #000000;
+}
+
+.logo-container {
+	text-align: center;
+	padding-top: 20px;	
+	width: 100%;
+}
+.main-logo {
+	max-width: 725px;
+	width: 100%;
+	height: auto;
+	display: block;
+	margin: 0 auto;
+}
+
+.image-container {
+	text-align: center;
+	margin: 20px auto;
+	width: 100%;
+	max-width: 100%;
+}
+
+.image-container img {
+	max-width: 100%;
+	height: auto;
+	display: inline-block;
+}
+
+/* allow an image to sit inline with text */
+.image-container.left {
+	float: left;
+	width: auto;
+	margin: 0 20px 20px 0; /* space between image and paragraph */
+	text-align: left;
+}
+
+.image-container.right {
+	float: right;
+	width: auto;
+	margin: 0 0 20px 20px; /* space between image and paragraph */
+	text-align: right;
+}
+
+/* clear any floated children so sections expand to contain them */
+section {
+	overflow: auto;
+}
+
+/* table styling - text colour follows theme variable */
+table, th, td {
+    color: var(--text-color);
+}
+
+/* optional borders to make tables readable in both themes */
+table {
+    border-collapse: collapse;
+    width: 100%;
+    table-layout: fixed;
+}
+th, td {
+    padding: 4px;
+}
+
+body.dark th, body.dark td {
+    border-color: #666;
+}
+.video-container {
+	text-align: center;
+	margin: 20px 0;
+}
+/* Navigation bar styles */
+.navbar {
+	background: transparent;
+	padding: 8px 0;
+}
+.navbar ul {
+	display: flex;
+	gap: 10px;
+	justify-content: center;
+	align-items: center;
+	padding: 0;
+	margin: 8px 0 20px 0;
+	flex-wrap: wrap;
+}
+.navbar li {
+	list-style: none;
+}
+.navbar a {
+	display: inline-block;
+	background: #e53935;
+	color: #fff;
+	padding: 10px 14px;
+	border-radius: 8px;
+	text-decoration: none;
+	font-weight: 600;
+	box-shadow: 0 2px 0 rgba(0,0,0,0.12);
+}
+.navbar a:hover {
+	background: orange;
+    cursor: pointer;
+	transform: scale(1.05);
+	transition: 0.15s;
+}
+
+/* highlight current page */
+.navbar a.active {
+    background: white;
+    color: black;
+ 	border: 2px solid #e53935;
+}
+.navbar a.active:hover {
+    background: white;
+    color: black;
+ 	border: 2px solid #e53935;
+    transform: scale(1.05);
+    transition: 0.15s;
+}
+
+@media (max-width: 520px) {
+	.navbar a {
+		padding: 8px 10px;
+		font-size: 14px;
+	}
+}
+
+/* search bar styling – generic framework for any page */
+.search-container {
+    text-align: center;
+    margin: 20px auto;
+    width: 100%;
+    max-width: 600px;
+}
+.search-container input {
+    width: 100%;
+    padding: 8px 12px;
+    font-size: 16px;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    transition: border-color 0.15s ease;
+}
+
+.search-container input:focus {
+    outline: none;
+    border-color: red;
+}
+
+body.dark .search-container input {
+    background-color: white;
+    color: black;
+    border-color: #ccc;
+}
+
+body.dark .search-container input:focus {
+    border-color: red;
+}
+
+/* highlighting for search results */
+mark {
+    background-color: #ffff00;
+    padding: 2px;
+    border-radius: 2px;
+}
+
+body.dark mark {
+    background-color: #ffaa00;
+    color: #000;
+}
+
+/* no results message */
+.no-results {
+    text-align: center;
+    padding: 20px;
+    color: #999;
+    font-size: 16px;
+}
+
+body.dark .no-results {
+    color: #aaa;
+}
+
+/* tags are for search only; hide visually but keep in DOM */
+.tags {
+    display: none;
+}

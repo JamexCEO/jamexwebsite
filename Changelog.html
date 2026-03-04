@@ -1,0 +1,126 @@
+<html>
+<head>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="assets/favicon.png">
+    <title> Changelog - Jamex </title>
+</head>
+<body>
+        <header> <h1> Changelog </h1>
+            <button id="theme-toggle" aria-label="Toggle dark mode">🌙</button>
+        </header>
+    <nav class="navbar">
+        <ul>
+            <li><a href="index.html">🏠 Home</a></li>
+            <li><a href="Events.html">📅 Events</a></li>
+            <li><a href="Hall_of_Fame.html">🏆 Hall of Fame</a></li>
+            <li><a href="Apps_and_Other_Products.html">📱 Products</a></li>
+            <li><a href="Sponsors_and_Partners.html">🤝 Sponsors & Partners</a></li>
+            <li><a href="Changelog.html">📝 Changelog</a></li>
+        </ul>
+    </nav>
+        <section> 
+            <!-- search widget; can be reused on other pages by matching IDs and selectors -->
+            <div class="search-container">
+                <input id="changelog-search" type="text" placeholder="Search changelog...">
+            </div>
+            <!-- individual changelog entries wrapped for easy filtering -->
+            <article class="changelog-entry">
+                <!-- tags are hidden but included in textContent for searching -->
+                <div class="tags">minor, minor update, fix, fixes, improvement, improvements</div>
+                <h2> v1.6.1 [4/3/26] - Search Improvements </h2>
+                <p> This is a small update to improve the search functionality on the Changelog page. </p>
+                    <ul>
+                        <li> Added a "No results found" message when no changelog entries match the search query </li>
+                        <li> Added highlighting for search results in both light and dark modes </li>
+                        <li> Changed the border colour of the search bar to red </li>
+                        <li> Changed the background colour of the search bar to white in dark mode </li>
+                        <li> Adjusted positioning on our Sponsors & Partners page and fixed our image positioning framework</li>
+                    </ul>
+            </article>
+            <article class="changelog-entry">
+                <div class="tags">major, major update</div>
+                <h2> v1.6 [4/3/26] - Changelog Search </h2>
+                <div class="image-container">
+                    <img src="assets/v1.6-image.png" width="2000" alt="Image showcasing the new search bar in v1.6">
+                </div>
+                <p> We have created an all-new search bar, that will intelligently search and filter changelog entries. You can search by version number, release date, or contents.</p>
+                    <ul>
+                        <li> Created a new framework for search bar, which can be added to other pages in the future </li>
+                        <li> Added a search bar to the Changelog page for easy filtering </li>
+                    </ul>
+                <p> Thanks for visiting and stay tuned! </p>
+            </article>
+            <article class="changelog-entry">
+                <div class="tags">minor, minor update, improvement, improvements</div>
+                <h2> v1.5.2 [4/3/26] - Images in Changelog </h2>
+                <p> This is a small update to add images to the Changelog page. </p>
+                <ul>
+                    <li> Added image support to major updates in the Changelog page to enhance visuals and provide distinction between major and minor updates </li>
+                </ul>
+                <p> Thanks for visiting and stay tuned! </p>
+            </article>
+            <article class="changelog-entry">
+                <h2> v1.5.1 [3/3/26] - Dark Mode Refinements </h2>
+                <p> This update is all about refining the experience in dark mode, after a few bugs in the last update. </p>
+                <ul>
+                    <li> Fixed an issue with the table items not changing colour in dark mode </li>
+                    <li> Changed "Events" to "Events Overview" to avoid confusion with the main Events page </li>
+                    <li> Changed colour of the "Events Overview" link in dark mode to be more visible </li>
+                    <li> Adjusted the background colour of the website in dark mode </li>
+                </ul>
+                <p> Thanks for visiting and stay tuned! </p>
+            </article>
+            <article class="changelog-entry">
+                <h2> v1.5 [3/3/26] - Dark Mode </h2>
+                <div class="image-container">
+                    <img src="assets/v1.5-image.png" width="2000" alt="Image showcasing the new dark mode in v1.5">
+                </div>
+                <p> We have introduced a dark mode toggle button to the top right of each page! </p>
+                <ul>
+                    <li> New dark mode toggle button at the top right of each page </li>
+                    <li> Added frameworks for more image alignment settings (left, right, etc.) </li>
+                    <li> Adjusted button, text and table appearance in dark mode </li>
+                    <li> Added "- Jamex" to each page title for better multitasking and tab naming </li>
+                </ul>
+                <p> Thanks for visiting and stay tuned! </p>
+            </article>
+            <article class="changelog-entry">
+                <h2> v1.4.2 [2/3/26] - Navigation Bar Issues </h2>
+                <p> This is a small fix for some issues with the navigation bar. </p>
+                <ul>
+                    <li> Fixed an issue where the current page was not being highlighted on the navigation bar </li>
+                </ul>
+                <p> Thanks for visiting and stay tuned! </p>
+            </article>
+            <article class="changelog-entry">
+                <h2> v1.4.1 [2/3/26] - Video Alignment Fix </h2>
+                <p> This is a small fix for a video alignment issue. </p>
+                <ul>
+                    <li> Fixed video alignment issues on all pages </li>
+                </ul>
+                <p> Thanks for visiting and stay tuned! </p>
+            </article>
+            <article class="changelog-entry">
+                <h2> v1.4 [2/3/26] - Navigation Bar + more </h2>
+                <div class="image-container">
+                    <img src="assets/v1.4-image.png" width="2000" alt="Image showcasing the new Navigation Bar in v1.4">
+                </div>
+                <p> We have introduced a new navigation bar to the top of the website! As part of our transition to VS Code, we were able to make many more changes! </p>
+                <ul>
+                    <li> New navigation bar </li>
+                    <li> Indication of current page on navigation bar through button colour </li>
+                    <li> Indication of external links vs internal links through button colour </li>
+                    <li> New framework to center images on pages </li>
+                    <li> New Changelog page to keep track of changes directly on our website </li>
+                    <li> Small visual refinements </li>
+                </ul>
+                <p> Thanks for visiting and stay tuned! </p>
+            </article>
+        </section>
+     <footer> <small> © Copyright Jamex 2026 </small> </footer>
+</body>
+<script src="common.js"></script>
+<script>
+    initSearch('changelog-search', '.changelog-entry');
+</script>
+</html>
