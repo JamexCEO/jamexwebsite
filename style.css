@@ -296,6 +296,11 @@ body.dark mark {
     font-size: 16px;
 }
 
+.small-text {
+	text-align: center;
+	color: #999;
+	font-size: 8px;
+}
 body.dark .no-results {
     color: #aaa;
 }
