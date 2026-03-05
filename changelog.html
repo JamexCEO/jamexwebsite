@@ -1,0 +1,168 @@
+<html>
+<head>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="assets/favicon.png?">
+    <title> Changelog - Jamex </title>
+</head>
+<body>
+        <header> <h1> Changelog </h1>
+            <button id="theme-toggle" aria-label="Toggle dark mode">🌙</button>
+        </header>
+    <nav class="navbar">
+        <ul>
+            <li><a href="index.html">🏠 Home</a></li>
+            <li><a href="events.html">📅 Events</a></li>
+            <li><a href="hall-of-fame.html">🏆 Hall of Fame</a></li>
+            <li><a href="products.html">📱 Products</a></li>
+            <li><a href="partners.html">🤝 Sponsors & Partners</a></li>
+            <li><a href="changelog.html">📝 Changelog</a></li>
+        </ul>
+    </nav>
+        <section> 
+            <!-- search widget; can be reused on other pages by matching IDs and selectors -->
+            <div class="search-container">
+                <input id="changelog-search" type="text" placeholder="Search changelog...">
+            </div>
+            <!-- individual changelog entries wrapped for easy filtering -->
+            <div class="small-text">
+                <p> 💡 Tip: Use "#major" or "#minor" to filter updates </p>
+            </div>
+            <article class="changelog-entry">
+                <div class="tags"> #minor </div>
+                <h2> v1.7.3 [6/3/26] - Page Name Changes </h2>
+                <p> We have changed the names of most of our pages. This doesn't affect their visible title, but makes it more simplified when entering a URL. </p>
+                <ul>
+                    <li> Changed "Index.html", "Events.html" and "Changelog.html" to be all lowercase, making it easier to navigate with a direct URL. </li>
+                    <li> Changed "Apps_and_Other_Products.html", "Hall_of_Fame.html" and "Sponsors_and_Partners.html" to "products.html", "hall-of-fame.html" and "partners.html" respectively, adding shorter and more consise titles and keeping it in line with standard URL practices </li>
+                </ul>
+                <p> Thanks for visiting and stay tuned! </p>
+            </article>
+            <article class="changelog-entry">
+                <div class="tags"> #minor </div>
+                <h2> v1.7.2 [5/3/26] - Fix for Search Filter Tip </h2>
+                <p> This update fixes the formatting of the tip under the search bar. </p>
+                <p> Thanks for visiting and stay tuned! <p>
+                <h2> v1.7.1 [5/3/26] - Link to Source Code </h2>
+                <p> This update adds an easier way to find our source code, and fixes some other issues. </p>
+                <ul>
+                    <li> Added a link to find the source code in the footer of every page </li>
+                    <li> Added a tip under the search bar for users to easily filter changelog entries </li>
+                    <li> Removed an unnecessary break in the Socials section </li>
+                </ul>
+                <p> Thanks for visiting and stay tuned! </p>
+            </article>
+            <article class="changelog-entry">
+                <div class="tags"> #major </div>
+                <h2> v1.7 [5/3/26] - Move to GitHub </h2>
+                <div class="image-container">
+                    <img src="assets/v1.7-image.png" width="2000" alt="Image showcasing the new GitHub repository for our codebase in v1.7">
+                </div>
+                <p> We have moved our codebase to GitHub for better collaboration and version control. Our website is now open source! You can find the code at <a href="https://github.com/JamexCEO/jamex"> https://github.com/JamexCEO/jamex</a>. We will no longer be updating our <a href="https://jamexwebsite.netlify.app">Netlify version</a>, but we will continue to keep it up for as long as possible. You can continue to get updates at the all new GitHub site: <a href="https://jamexceo.github.io/jamexwebsite/index.html"> https://jamexceo.github.io/jamexwebsite</a> (this version).</p>
+                <p> Thanks for visiting and stay tuned! </p>
+            </article>
+            <article class="changelog-entry">
+                <!-- tags are hidden but included in textContent for searching -->
+                <div class="tags"> #minor </div>
+                <h2> v1.6.1 [4/3/26] - Search Improvements </h2>
+                <p> This is a small update to improve the search functionality on the Changelog page. </p>
+                    <ul>
+                        <li> Added a "No results found" message when no changelog entries match the search query </li>
+                        <li> Added highlighting for search results in both light and dark modes </li>
+                        <li> Changed the border colour of the search bar to red </li>
+                        <li> Changed the background colour of the search bar to white in dark mode </li>
+                        <li> Adjusted positioning on our Sponsors & Partners page and fixed our image positioning framework</li>
+                    </ul>
+                <p> Thanks for visiting and stay tuned! </p>
+            </article>
+            <article class="changelog-entry">
+                <div class="tags"> #major </div>
+                <h2> v1.6 [4/3/26] - Changelog Search </h2>
+                <div class="image-container">
+                    <img src="assets/v1.6-image.png" width="2000" alt="Image showcasing the new search bar in v1.6">
+                </div>
+                <p> We have created an all-new search bar, that will intelligently search and filter changelog entries. You can search by version number, release date, or contents.</p>
+                    <ul>
+                        <li> Created a new framework for search bar, which can be added to other pages in the future </li>
+                        <li> Added a search bar to the Changelog page for easy filtering </li>
+                    </ul>
+                <p> Thanks for visiting and stay tuned! </p>
+            </article>
+            <article class="changelog-entry">
+                <div class="tags"> #minor </div>
+                <h2> v1.5.2 [4/3/26] - Images in Changelog </h2>
+                <p> This is a small update to add images to the Changelog page. </p>
+                <ul>
+                    <li> Added image support to major updates in the Changelog page to enhance visuals and provide distinction between major and minor updates </li>
+                </ul>
+                <p> Thanks for visiting and stay tuned! </p>
+            </article>
+            <article class="changelog-entry">
+                <div class="tags"> #minor </div>
+                <h2> v1.5.1 [3/3/26] - Dark Mode Refinements </h2>
+                <p> This update is all about refining the experience in dark mode, after a few bugs in the last update. </p>
+                <ul>
+                    <li> Fixed an issue with the table items not changing colour in dark mode </li>
+                    <li> Changed "Events" to "Events Overview" to avoid confusion with the main Events page </li>
+                    <li> Changed colour of the "Events Overview" link in dark mode to be more visible </li>
+                    <li> Adjusted the background colour of the website in dark mode </li>
+                </ul>
+                <p> Thanks for visiting and stay tuned! </p>
+            </article>
+            <article class="changelog-entry">
+                <div class="tags"> #major </div>
+                <h2> v1.5 [3/3/26] - Dark Mode </h2>
+                <div class="image-container">
+                    <img src="assets/v1.5-image.png" width="2000" alt="Image showcasing the new dark mode in v1.5">
+                </div>
+                <p> We have introduced a dark mode toggle button to the top right of each page! </p>
+                <ul>
+                    <li> New dark mode toggle button at the top right of each page </li>
+                    <li> Added frameworks for more image alignment settings (left, right, etc.) </li>
+                    <li> Adjusted button, text and table appearance in dark mode </li>
+                    <li> Added "- Jamex" to each page title for better multitasking and tab naming </li>
+                </ul>
+                <p> Thanks for visiting and stay tuned! </p>
+            </article>
+            <article class="changelog-entry">
+                <div class="tags"> #minor </div>
+                <h2> v1.4.2 [2/3/26] - Navigation Bar Issues </h2>
+                <p> This is a small fix for some issues with the navigation bar. </p>
+                <ul>
+                    <li> Fixed an issue where the current page was not being highlighted on the navigation bar </li>
+                </ul>
+                <p> Thanks for visiting and stay tuned! </p>
+            </article>
+            <article class="changelog-entry">
+                <div class="tags"> #minor </div>
+                <h2> v1.4.1 [2/3/26] - Video Alignment Fix </h2>
+                <p> This is a small fix for a video alignment issue. </p>
+                <ul>
+                    <li> Fixed video alignment issues on all pages </li>
+                </ul>
+                <p> Thanks for visiting and stay tuned! </p>
+            </article>
+            <article class="changelog-entry">
+                <div class="tags"> #major </div>
+                <h2> v1.4 [2/3/26] - Navigation Bar + more </h2>
+                <div class="image-container">
+                    <img src="assets/v1.4-image.png" width="2000" alt="Image showcasing the new Navigation Bar in v1.4">
+                </div>
+                <p> We have introduced a new navigation bar to the top of the website! As part of our transition to VS Code, we were able to make many more changes! </p>
+                <ul>
+                    <li> New navigation bar </li>
+                    <li> Indication of current page on navigation bar through button colour </li>
+                    <li> Indication of external links vs internal links through button colour </li>
+                    <li> New framework to center images on pages </li>
+                    <li> New Changelog page to keep track of changes directly on our website </li>
+                    <li> Small visual refinements </li>
+                </ul>
+                <p> Thanks for visiting and stay tuned! </p>
+            </article>
+        </section>
+    <footer> <small> © Copyright Jamex 2026 | <a href="https://github.com/JamexCEO/jamex"> See our source code </a> </small> </footer>
+</body>
+<script src="common.js"></script>
+<script>
+    initSearch('changelog-search', '.changelog-entry');
+</script>
+</html>
