@@ -53,57 +53,83 @@
         const input = document.getElementById(inputId);
         if (!input) return;
         const items = document.querySelectorAll(itemSelector);
-        
+
         // Create a "no results" message element
         const noResultsMsg = document.createElement('div');
         noResultsMsg.className = 'no-results';
         noResultsMsg.textContent = 'No results found';
         noResultsMsg.style.display = 'none';
-        input.parentNode.insertAdjacentElement('afterend', noResultsMsg);
-        
-        // Store original HTML for all items so we can restore and re-highlight
-        const originals = new Map();
-        items.forEach(el => {
-            originals.set(el, el.innerHTML);
-        });
-        
+        // Insert after the tip (.small-text) if it follows the search container,
+        // otherwise fall back to inserting directly after the search container
+        const searchContainer = input.parentNode;
+        const tip = searchContainer.nextElementSibling;
+        const anchor = (tip && tip.classList.contains('small-text')) ? tip : searchContainer;
+        anchor.insertAdjacentElement('afterend', noResultsMsg);
+
         input.addEventListener('input', () => {
             const q = input.value.trim();
             const qLower = q.toLowerCase();
             let visibleCount = 0;
-            
+
             items.forEach(el => {
-                // Restore original HTML first
-                el.innerHTML = originals.get(el);
-                
+                // Remove any existing <mark> highlights without touching media elements
+                removeHighlights(el);
+
                 // Show/hide based on match
                 const matches = el.textContent.toLowerCase().includes(qLower);
                 el.style.display = matches ? '' : 'none';
                 if (matches) visibleCount++;
-                
+
                 // Highlight matches if query is not empty and entry is visible
                 if (q && matches) {
                     highlightInNode(el, q);
                 }
             });
-            
+
             // Show "no results" message if search is active but nothing matches
             noResultsMsg.style.display = (q && visibleCount === 0) ? '' : 'none';
         });
     }
-    
-    // helper: highlight all occurrences of query text in a DOM node
+
+    // Remove all <mark> elements by unwrapping them back to plain text,
+    // leaving all other DOM nodes (including <video>, <img>) completely untouched.
+    function removeHighlights(node) {
+        const marks = node.querySelectorAll('mark');
+        // Iterate in reverse so parent marks are unwrapped after their children
+        Array.from(marks).reverse().forEach(mark => {
+            const parent = mark.parentNode;
+            if (!parent) return;
+            // Replace <mark> with its text content as a plain text node
+            parent.replaceChild(document.createTextNode(mark.textContent), mark);
+            // Merge adjacent text nodes to keep the DOM tidy
+            parent.normalize();
+        });
+    }
+
+    // helper: highlight all occurrences of query text in a DOM node,
+    // skipping any media elements so they are never modified
     function highlightInNode(node, query) {
         const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
         const regex = new RegExp(`(${escapedQuery})`, 'gi');
-        
+
         const walker = document.createTreeWalker(
             node,
             NodeFilter.SHOW_TEXT,
-            null,
+            {
+                acceptNode(textNode) {
+                    // Skip text inside media or interactive elements
+                    const skipTags = new Set(['VIDEO', 'AUDIO', 'SCRIPT', 'STYLE', 'IFRAME']);
+                    let ancestor = textNode.parentNode;
+                    while (ancestor && ancestor !== node) {
+                        if (skipTags.has(ancestor.tagName)) return NodeFilter.FILTER_REJECT;
+                        ancestor = ancestor.parentNode;
+                    }
+                    return NodeFilter.FILTER_ACCEPT;
+                }
+            },
             false
         );
-        
+
         const nodesToProcess = [];
         let textNode;
         while (textNode = walker.nextNode()) {
@@ -111,7 +137,7 @@
                 nodesToProcess.push(textNode);
             }
         }
-        
+
         // Process in reverse to maintain node references
         nodesToProcess.reverse().forEach(textNode => {
             const span = document.createElement('span');
@@ -119,6 +145,6 @@
             textNode.parentNode.replaceChild(span, textNode);
         });
     }
-    
+
     window.initSearch = initSearch;
 })();
