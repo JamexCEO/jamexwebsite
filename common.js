@@ -27,13 +27,15 @@
         }
     });
 
-    // --- dark mode toggle logic ---
+    // --- theme toggle logic ---
     // Three states: 'auto' | 'light' | 'dark'
-    // Cycle order: auto → light → dark → auto
+    // Cycle always moves away from the current *appearance* first:
+    //   System dark:  auto(dark) → light → dark → auto
+    //   System light: auto(light) → dark → light → auto
     const themeToggle = document.getElementById('theme-toggle');
     const systemDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)');
 
-    const ICONS = { auto: '🌗', light: '☀️', dark: '🌙' };
+    const ICONS = { auto: '🌓', light: '☀️', dark: '🌙' };
     const LABELS = { auto: 'Auto (system)', light: 'Light mode', dark: 'Dark mode' };
 
     const applyTheme = (mode) => {
@@ -56,7 +58,17 @@
     if (themeToggle) {
         themeToggle.addEventListener('click', () => {
             const current = getMode();
-            const next = current === 'auto' ? 'light' : current === 'light' ? 'dark' : 'auto';
+            const systemIsDark = systemDark && systemDark.matches;
+            let next;
+            if (current === 'auto') {
+                // First click always switches away from what you're currently seeing
+                next = systemIsDark ? 'light' : 'dark';
+            } else if (current === 'light') {
+                next = systemIsDark ? 'dark' : 'auto';
+            } else {
+                // current === 'dark'
+                next = systemIsDark ? 'auto' : 'light';
+            }
             setMode(next);
         });
     }
