@@ -28,119 +28,138 @@
     });
 
     // --- theme toggle logic ---
-    // Three states: 'auto' | 'light' | 'dark'
-    // Cycle always moves away from the current *appearance* first:
-    //   System dark:  auto(dark) → light → dark → auto
-    //   System light: auto(light) → dark → light → auto
+    // Three states in localStorage:
+    //   null = Auto (follows system), shown as 🌓
+    //   '1'  = Dark (forced),         shown as 🌙 (click to go light)
+    //   '0'  = Light (forced),        shown as ☀️  (click to go dark)
+    //
+    // Icon shows what you'll get on the NEXT click (standard toggle convention):
+    //   In dark mode  → show 🌙 so you know clicking brings light
+    //   In light mode → show ☀️ so you know clicking brings dark
+    //   In auto mode  → show 🌓
+    //
+    // Cycle when system is dark:  Auto(🌓) → Light(☀️) → Dark(🌙) → Auto(🌓)
+    // Cycle when system is light: Auto(🌓) → Dark(🌙) → Light(☀️) → Auto(🌓)
+    // First click always produces a visible change from the current state.
+
     const themeToggle = document.getElementById('theme-toggle');
-    const systemDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)');
+    const systemDark = () => window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
 
-    const ICONS = { auto: '🌓', light: '☀️', dark: '🌙' };
-    const LABELS = { auto: 'Auto (system)', light: 'Light mode', dark: 'Dark mode' };
+    const applyTheme = (dark) => {
+        document.body.classList.toggle('dark', dark);
+    };
 
-    const applyTheme = (mode) => {
-        const isDark = mode === 'dark' || (mode === 'auto' && systemDark && systemDark.matches);
-        document.body.classList.toggle('dark', isDark);
-        if (themeToggle) {
-            themeToggle.textContent = ICONS[mode];
-            themeToggle.setAttribute('aria-label', LABELS[mode]);
-            themeToggle.dataset.mode = mode;
+    const updateToggleLabel = () => {
+        if (!themeToggle) return;
+        const stored = localStorage.getItem('dark-mode');
+        if (stored === null) {
+            themeToggle.textContent = '🌓'; // Auto
+        } else if (stored === '1') {
+            themeToggle.textContent = '🌙'; // Currently dark → click for light
+        } else {
+            themeToggle.textContent = '☀️';  // Currently light → click for dark
         }
     };
 
-    const setMode = (mode) => {
-        localStorage.setItem('theme-mode', mode);
-        applyTheme(mode);
-    };
-
-    const getMode = () => localStorage.getItem('theme-mode') || 'auto';
-
+    // Click cycles: Auto → (opposite of current) → (back to current) → Auto
     if (themeToggle) {
         themeToggle.addEventListener('click', () => {
-            const current = getMode();
-            const systemIsDark = systemDark && systemDark.matches;
-            let next;
-            if (current === 'auto') {
-                // First click always switches away from what you're currently seeing
-                next = systemIsDark ? 'light' : 'dark';
-            } else if (current === 'light') {
-                next = systemIsDark ? 'dark' : 'auto';
+            const stored = localStorage.getItem('dark-mode');
+            if (stored === null) {
+                // Auto → flip to opposite of system
+                const newDark = !systemDark();
+                localStorage.setItem('dark-mode', newDark ? '1' : '0');
+                applyTheme(newDark);
+            } else if (stored === '1') {
+                // Dark → Light
+                localStorage.setItem('dark-mode', '0');
+                applyTheme(false);
             } else {
-                // current === 'dark'
-                next = systemIsDark ? 'auto' : 'light';
+                // Light → Auto
+                localStorage.removeItem('dark-mode');
+                applyTheme(systemDark());
             }
-            setMode(next);
+            updateToggleLabel();
         });
     }
 
-    // Initialize theme on page load
-    applyTheme(getMode());
-
-    // When in 'auto' mode, react to system theme changes live
-    if (systemDark) {
-        systemDark.addEventListener('change', () => {
-            if (getMode() === 'auto') {
-                applyTheme('auto');
+    // Initialize
+    const stored = localStorage.getItem('dark-mode');
+    if (stored !== null) {
+        applyTheme(stored === '1');
+    } else {
+        applyTheme(systemDark());
+        // Stay in sync when in Auto mode and system preference changes
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+            if (localStorage.getItem('dark-mode') === null) {
+                applyTheme(e.matches);
+                updateToggleLabel();
             }
         });
     }
+    updateToggleLabel();
 
-    // simple search helper with highlighting – pages call this if they need it
+    // --- search helper with highlighting ---
     function initSearch(inputId, itemSelector) {
         const input = document.getElementById(inputId);
         if (!input) return;
         const items = document.querySelectorAll(itemSelector);
-        
-        // Create a "no results" message element
+
         const noResultsMsg = document.createElement('div');
         noResultsMsg.className = 'no-results';
         noResultsMsg.textContent = 'No results found';
         noResultsMsg.style.display = 'none';
         input.parentNode.insertAdjacentElement('afterend', noResultsMsg);
-        
-        // Store original HTML for all items so we can restore and re-highlight
-        const originals = new Map();
-        items.forEach(el => {
-            originals.set(el, el.innerHTML);
-        });
-        
+
         input.addEventListener('input', () => {
             const q = input.value.trim();
             const qLower = q.toLowerCase();
             let visibleCount = 0;
-            
+
             items.forEach(el => {
-                // Restore original HTML first
-                el.innerHTML = originals.get(el);
-                
-                // Show/hide based on match
+                // Remove previous highlights surgically — never touch innerHTML,
+                // which would reset iframes/videos and cause flashing
+                removeHighlights(el);
+
                 const matches = el.textContent.toLowerCase().includes(qLower);
                 el.style.display = matches ? '' : 'none';
                 if (matches) visibleCount++;
-                
-                // Highlight matches if query is not empty and entry is visible
-                if (q && matches) {
-                    highlightInNode(el, q);
-                }
+
+                if (q && matches) highlightInNode(el, q);
             });
-            
-            // Show "no results" message if search is active but nothing matches
+
             noResultsMsg.style.display = (q && visibleCount === 0) ? '' : 'none';
         });
     }
-    
-    // helper: highlight all occurrences of query text in a DOM node
+
+    // Unwrap all <mark> elements, leaving everything else (iframes, videos) untouched
+    function removeHighlights(node) {
+        node.querySelectorAll('mark').forEach(mark => {
+            const parent = mark.parentNode;
+            parent.replaceChild(document.createTextNode(mark.textContent), mark);
+            parent.normalize();
+        });
+    }
+
+    // Wrap query matches in <mark> tags, skipping inside media elements
     function highlightInNode(node, query) {
         const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
         const regex = new RegExp(`(${escapedQuery})`, 'gi');
-        
-        const walker = document.createTreeWalker(
-            node,
-            NodeFilter.SHOW_TEXT,
-            null,
-            false
-        );
-        
+
+        const mediaFilter = {
+            acceptNode(n) {
+                let p = n.parentNode;
+                while (p && p !== node) {
+                    if (/^(IFRAME|VIDEO|AUDIO|IMG|SCRIPT|STYLE)$/.test(p.nodeName)) {
+                        return NodeFilter.FILTER_REJECT;
+                    }
+                    p = p.parentNode;
+                }
+                return NodeFilter.FILTER_ACCEPT;
+            }
+        };
+
+        const walker = document.createTreeWalker(node, NodeFilter.SHOW_TEXT, mediaFilter);
         const nodesToProcess = [];
         let textNode;
         while (textNode = walker.nextNode()) {
@@ -148,14 +167,13 @@
                 nodesToProcess.push(textNode);
             }
         }
-        
-        // Process in reverse to maintain node references
+
         nodesToProcess.reverse().forEach(textNode => {
             const span = document.createElement('span');
             span.innerHTML = textNode.nodeValue.replace(regex, '<mark>$1</mark>');
             textNode.parentNode.replaceChild(span, textNode);
         });
     }
-    
+
     window.initSearch = initSearch;
 })();
