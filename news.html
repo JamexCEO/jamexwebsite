@@ -1,0 +1,52 @@
+<html>
+<head>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="assets/favicon.png?">
+    <title> News - Jamex </title>
+</head>
+<body>
+        <header> <h1> News </h1>
+            <button id="theme-toggle" aria-label="Toggle dark mode">🌙</button>
+        </header>
+    <nav class="navbar">
+        <ul>
+            <li><a href="index.html">🏠 Home</a></li>
+            <li><a href="events.html">📅 Events</a></li>
+            <li><a href="news.html">📰 News</a></li>
+            <li><a href="hall-of-fame.html">🏆 Hall of Fame</a></li>
+            <li><a href="products.html">📱 Products</a></li>
+            <li><a href="partners.html">🤝 Partners</a></li>
+            <li><a href="our-team.html">👥 Our Team</a></li>
+            <li><a href="changelog.html">📝 Changelog</a></li>
+        </ul>
+    </nav>
+        <section> 
+            <!-- search widget; can be reused on other pages by matching IDs and selectors -->
+            <div class="search-container">
+                <input id="news-search" type="text" placeholder="Search news articles...">
+            </div>
+            <div class="small-text">
+                <p> 💡 Tip: Use tags to filter news articles </p>
+            </div>
+            <!-- individual news entries wrapped for easy filtering -->
+            <article class="news-entry">
+                <h2> Jamex Website update v1.14</h2>
+                <div class="date"> 27/3/2026 </div>
+                <div class="visible-tags">
+                    <span class="tag">#update</span>
+                    <span class="tag">#jamexwebsite</span>
+                </div>
+                <div class="image-container">
+                    <img src="assets/v1.14-image.png" width="2000" alt="Promotional image for the Jamex Website update v1.14">
+                </div>
+                <p> This update introduces the <i>News</i> page, where you can keep track of updates, new product launches, new videos and announcements, and more, all in one place!</p>
+                <p> See the entire update <a href="changelog.html">here</a>. </p>
+            </article>
+        </section>
+    <footer> <small> © Copyright Jamex 2026 | <a href="https://github.com/JamexCEO/jamex"> See our source code </a> </small> </footer>
+</body>
+<script src="common.js"></script>
+<script>
+    initSearch('news-search', '.news-entry');
+</script>
+</html>
