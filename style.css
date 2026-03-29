@@ -424,13 +424,21 @@ body.dark .no-results {
 
 /* ── News page: date and tag styles ── */
 
-/* Publication date — muted, small, centered */
+/* Row that holds date + tags on one line, centered */
+.news-meta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: -6px 0 14px 0;
+}
+
+/* Publication date — muted, small */
 .date {
-    text-align: center;
     font-size: 14px;
     color: #888;
-    margin: -10px 0 8px 0; /* pull up close under the h2 */
-    font-style: italic;
+    text-align: center;
 }
 
 body.dark .date {
@@ -441,16 +449,9 @@ body.dark .date {
 .visible-tags {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
     gap: 6px;
-    margin: 8px 0 16px 0;
 }
 
-/* Each word that starts with # becomes its own bubble via a JS-free trick:
-   we treat the whole string as one flex item and split visually with spacing.
-   For true individual bubbles, each tag should be its own <span class="tag"> inside
-   .visible-tags — see news.html comment below. For now this styles the container
-   and individual <span class="tag"> children. */
 .visible-tags .tag,
 .tag {
     display: inline-block;
@@ -459,7 +460,7 @@ body.dark .date {
     font-size: 13px;
     font-weight: 600;
     padding: 3px 10px;
-    border-radius: 999px;   /* pill shape */
+    border-radius: 999px;
     font-family: Arial, sans-serif;
     letter-spacing: 0.02em;
 }

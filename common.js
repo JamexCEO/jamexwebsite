@@ -109,7 +109,12 @@
         noResultsMsg.className = 'no-results';
         noResultsMsg.textContent = 'No results found';
         noResultsMsg.style.display = 'none';
-        input.parentNode.insertAdjacentElement('afterend', noResultsMsg);
+        // Insert after the tip (.small-text) if it follows the search container,
+        // otherwise fall back to inserting directly after the search container
+        const searchContainer = input.parentNode;
+        const tip = searchContainer.nextElementSibling;
+        const anchor = (tip && tip.classList.contains('small-text')) ? tip : searchContainer;
+        anchor.insertAdjacentElement('afterend', noResultsMsg);
 
         input.addEventListener('input', () => {
             const q = input.value.trim();
@@ -176,4 +181,58 @@
     }
 
     window.initSearch = initSearch;
+
+    // --- Latest News loader for homepage ---
+    // Fetches news.html and injects the first .news-entry into #latest-news-container.
+    // iframes are replaced with a "Watch on News page" link to keep the homepage light.
+    function loadLatestNews() {
+        const container = document.getElementById('latest-news-container');
+        if (!container) return;
+
+        fetch('news.html')
+            .then(res => {
+                if (!res.ok) throw new Error('Could not load news.html');
+                return res.text();
+            })
+            .then(html => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const firstEntry = doc.querySelector('.news-entry');
+                if (!firstEntry) {
+                    container.innerHTML = '<p class="centered-text" style="color:#999;">No news articles found.</p>';
+                    return;
+                }
+
+                // Clone so we can safely modify without affecting the parsed doc
+                const clone = firstEntry.cloneNode(true);
+
+                // Downgrade h2 → h3 so it doesn't clash with the "Latest News" h2
+                clone.querySelectorAll('h2').forEach(h2 => {
+                    const h3 = document.createElement('h3');
+                    h3.innerHTML = h2.innerHTML;
+                    h3.className = h2.className;
+                    h2.replaceWith(h3);
+                });
+
+                // Replace any iframes with a friendly link
+                clone.querySelectorAll('iframe').forEach(iframe => {
+                    const link = document.createElement('p');
+                    link.className = 'centered-text';
+                    link.innerHTML = '<a href="news.html">▶ Watch on the News page</a>';
+                    const vc = iframe.closest('.video-container');
+                    (vc || iframe).replaceWith(link);
+                });
+
+                container.innerHTML = '';
+                container.appendChild(clone);
+            })
+            .catch(() => {
+                container.innerHTML = '<p class="centered-text" style="color:#999;">Could not load latest news.</p>';
+            });
+    }
+
+    // Only run on the homepage
+    if (document.getElementById('latest-news-container')) {
+        loadLatestNews();
+    }
 })();
