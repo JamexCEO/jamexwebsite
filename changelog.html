@@ -24,11 +24,31 @@
             <!-- search widget; can be reused on other pages by matching IDs and selectors -->
             <div class="search-container">
                 <input id="changelog-search" type="text" placeholder="Search changelog...">
+                <select id="changelog-filter" aria-label="Filter by update type">
+                    <option value="">All</option>
+                    <option value="#major">Major</option>
+                    <option value="#minor">Minor</option>
+                </select>
             </div>
             <div class="small-text">
-                <p> 💡 Tip: Use "#major" or "#minor" to filter updates </p>
+                <p> 💡 Tip: Use the search bar or dropdown to filter updates </p>
             </div>
             <!-- individual changelog entries wrapped for easy filtering -->
+            <article class="changelog-entry">
+                <div class="tags">#major</div>
+                <h2> v1.17 - Dropdown Filters</h2>
+                <div class="date"> 3/4/2026 </div>
+                <div class="image-container">
+                    <img src="assets/v1.17-image.png" width="2000" alt="Image showcasing the new dropdown filter in v1.17">
+                </div>
+                <p> This update makes it easier than ever to filter changelog entries. Now, with the brand-new dropdown filter next to the search bar, you can easily select "Major" or "Minor" updates. Not only is this easier than the previous method, but it is also more reliable and does not highlight results that contain the terms "major" or "minor", only highlighting entries with those tags. <i>(Note: the ability to filter by searching "#major" or "#minor" has not been removed for backward compatibility.)</i> </p>
+                <ul>
+                    <li> Stopped text in tags on the News page from being highlighted during search </li>
+                    <li> Implemented the dropdown filter for easier and more precise changelog entry filtering </li>
+                    <li> Refined the dropdown filter to only search the entry tags and not the entry text</li>
+                </ul>
+                <p><i>Thanks for visiting and stay tuned!</i></p>            
+            </article>
             <article class="changelog-entry">
                 <div class="tags">#minor</div>
                 <h2> v1.16.1 - Minor Improvements</h2>
@@ -499,6 +519,6 @@
 </body>
 <script src="common.js"></script>
 <script>
-    initSearch('changelog-search', '.changelog-entry');
+    initSearch('changelog-search', '.changelog-entry', 'changelog-filter');
 </script>
 </html>

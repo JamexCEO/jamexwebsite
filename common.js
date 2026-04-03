@@ -100,9 +100,12 @@
     updateToggleLabel();
 
     // --- search helper with highlighting ---
-    function initSearch(inputId, itemSelector) {
+    // filterSelectId (optional): ID of a <select> whose value is a tag string
+    // (e.g. "#major" or "#minor") to AND with the text search.
+    function initSearch(inputId, itemSelector, filterSelectId) {
         const input = document.getElementById(inputId);
         if (!input) return;
+        const filterSelect = filterSelectId ? document.getElementById(filterSelectId) : null;
         const items = document.querySelectorAll(itemSelector);
 
         const noResultsMsg = document.createElement('div');
@@ -116,25 +119,34 @@
         const anchor = (tip && tip.classList.contains('small-text')) ? tip : searchContainer;
         anchor.insertAdjacentElement('afterend', noResultsMsg);
 
-        input.addEventListener('input', () => {
+        function runFilter() {
             const q = input.value.trim();
             const qLower = q.toLowerCase();
+            const tag = filterSelect ? filterSelect.value.toLowerCase() : '';
             let visibleCount = 0;
 
             items.forEach(el => {
-                // Remove previous highlights surgically — never touch innerHTML,
-                // which would reset iframes/videos and cause flashing
+                // Remove previous highlights surgically
                 removeHighlights(el);
 
-                const matches = el.textContent.toLowerCase().includes(qLower);
+                const text = el.textContent.toLowerCase();
+                const textMatch = text.includes(qLower);
+                const tagsDiv = el.querySelector('.tags');
+                const tagText = tagsDiv ? tagsDiv.textContent.toLowerCase() : '';
+                const tagMatch = !tag || tagText.includes(tag);
+                const matches = textMatch && tagMatch;
+
                 el.style.display = matches ? '' : 'none';
                 if (matches) visibleCount++;
 
                 if (q && matches) highlightInNode(el, q);
             });
 
-            noResultsMsg.style.display = (q && visibleCount === 0) ? '' : 'none';
-        });
+            noResultsMsg.style.display = ((q || tag) && visibleCount === 0) ? '' : 'none';
+        }
+
+        input.addEventListener('input', runFilter);
+        if (filterSelect) filterSelect.addEventListener('change', runFilter);
     }
 
     // Unwrap all <mark> elements, leaving everything else (iframes, videos) untouched
@@ -156,6 +168,9 @@
                 let p = n.parentNode;
                 while (p && p !== node) {
                     if (/^(IFRAME|VIDEO|AUDIO|IMG|SCRIPT|STYLE)$/.test(p.nodeName)) {
+                        return NodeFilter.FILTER_REJECT;
+                    }
+                    if (p.classList && (p.classList.contains('tag') || p.classList.contains('visible-tags'))) {
                         return NodeFilter.FILTER_REJECT;
                     }
                     p = p.parentNode;

@@ -289,13 +289,16 @@ body.dark th, body.dark td {
 
 /* search bar styling – generic framework for any page */
 .search-container {
-    text-align: center;
+    display: flex;
+    align-items: center;
+    gap: 8px;
     margin: 20px auto;
     width: 100%;
     max-width: 600px;
 }
 .search-container input {
-    width: 100%;
+    flex: 1;
+    min-width: 0;
     padding: 8px 12px;
     font-size: 16px;
     border: 2px solid #ccc;
@@ -308,6 +311,23 @@ body.dark th, body.dark td {
     border-color: red;
 }
 
+.search-container select {
+    padding: 8px 10px;
+    font-size: 16px;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background-color: white;
+    color: black;
+    cursor: pointer;
+    transition: border-color 0.15s ease;
+    flex-shrink: 0;
+}
+
+.search-container select:focus {
+    outline: none;
+    border-color: red;
+}
+
 body.dark .search-container input {
     background-color: white;
     color: black;
@@ -315,6 +335,16 @@ body.dark .search-container input {
 }
 
 body.dark .search-container input:focus {
+    border-color: red;
+}
+
+body.dark .search-container select {
+    background-color: white;
+    color: black;
+    border-color: #ccc;
+}
+
+body.dark .search-container select:focus {
     border-color: red;
 }
 
